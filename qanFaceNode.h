@@ -55,10 +55,17 @@ public:
     Q_PROPERTY( QUrl image READ getImage WRITE setImage NOTIFY imageChanged )
     const QUrl&         getImage() const noexcept { return _image; }
     void                setImage(QUrl image) noexcept;
+
+    Q_PROPERTY( QString type READ getType WRITE setType NOTIFY typeChanged )
+    QString getType() const { return _type; }
+    void setType(const QString &t) { _type = t; }
+
 private:
     QUrl        _image;
+    QString		_type;
 signals:
     void        imageChanged();
+    void 		typeChanged();
 
     /*! \name Node Static Factories *///---------------------------------------
     //@{
@@ -75,9 +82,16 @@ public:
     explicit FaceGraph( QQuickItem* parent = nullptr ) noexcept : qan::Graph(parent) { }
 
 public:
-    Q_INVOKABLE qan::Node* insertFaceNode() {
-        return insertNode<FaceNode>(nullptr);
+    Q_INVOKABLE qan::Node* insertFaceNode(const QJsonObject &info) {
+        auto node = qobject_cast<FaceNode*>(insertNode<FaceNode>(nullptr));
+        node->setType(info["type"].toString ());
+        node->setLabel(info["label"].toString ());
+        emit nodeInserted (node);
+        return node;
     }
+
+signals:
+    void nodeInserted(qan::Node* node);
 };
 
 } // ::qan

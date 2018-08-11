@@ -16,7 +16,10 @@ include(D:/GitHub/QuickQanava-master/src/quickqanava.pri)
 
 SOURCES += \
         main.cpp \
-    FileReadWriter.cpp
+    FileReadWriter.cpp \
+    qanFaceNode.cpp \
+    model/TreeItem.cpp \
+    model/TreeModel.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +35,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    FileReadWriter.h
+    FileReadWriter.h \
+    qanFaceNode.h \
+    model/TreeItem.h \
+    model/TreeModel.h
