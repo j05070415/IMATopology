@@ -58,6 +58,11 @@ Qan.NodeItem {
         visible: faceNodeItem.style.effectEnabled
         transparentBorder: true
     }
+    Label {
+        anchors.horizontalCenter: parent.horizontalCenter
+        z: 3
+        text: faceNodeItem.node.label
+    }
     Image {
         id: image
         z: 1
