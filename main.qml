@@ -52,7 +52,7 @@ ApplicationWindow {
 
     function readLinjie() {
         var i, j, row, splits, label, tmp
-        var linjie = FileOper.read("D:/GitHub/IMATopolgy/linjie.txt")
+        var linjie = FileOper.read("D:/GitHub/IMATopology/linjie.txt")
         var rows = linjie.split("\n")
         for (i=0; i<rows.length; ++i) {
             row = rows[i]
@@ -70,12 +70,11 @@ ApplicationWindow {
                 }
             }
         }
-//        print(JSON.stringify(sw_swes))
     }
 
     function readTopo() {
         var i, row, splits
-        var txt = FileOper.read("D:/GitHub/IMATopolgy/topo.txt")
+        var txt = FileOper.read("D:/GitHub/IMATopology/topo.txt")
         var rows = txt.split("\n")
         for (i=0; i<rows.length; ++i) {
             row = rows[i]
@@ -84,7 +83,6 @@ ApplicationWindow {
 
             var swLabel = "s"+splits[0]
             var node = topology.insertFaceNode({"type":"sw","label":swLabel})
-//            var e = topology.insertPort(node, Qan.NodeItem.Right)
             node.image = "qrc:/images/sw.png"
             node.label = swLabel
 
@@ -98,7 +96,6 @@ ApplicationWindow {
                 var esLabel = "e"+splits[j]
                 if (!hasNodes(esLabel)) {
                     node = topology.insertFaceNode({"type":"es","label":esLabel})
-//                    topology.insertPort(node, Qan.NodeItem.Right)
                     node.image = "qrc:/images/es.png"
                     node.label = esLabel
                     eses.push(node)
@@ -135,9 +132,6 @@ ApplicationWindow {
                 var esName = ess[j]
                 var esNode = findNode(esName)
                 edge = topology.insertEdge(swNode, esNode)
-                edge.label = "wedge"+String(i)
-//                topology.bindEdgeSource(edge, swNode.item.ports.at(0))
-//                topology.bindEdgeDestination(edge, esNode.item.ports.at(0))
             }
         }
 
@@ -151,9 +145,6 @@ ApplicationWindow {
                 esName = ess[j]
                 esNode = findNode(esName)
                 edge = topology.insertEdge(swNode, esNode)
-                edge.label = "eedge"+String(i)
-//                topology.bindEdgeSource(edge, swNode.item.ports.at(0))
-//                topology.bindEdgeDestination(edge, esNode.item.ports.at(0))
             }
         }
     }
@@ -223,6 +214,10 @@ ApplicationWindow {
 
             DropArea {
                 anchors.fill: parent
+                onEntered: {
+                    if (!drag.text) drag.accepted = false
+                }
+
                 onDropped: {
                     var label = ""
                     var node
@@ -237,7 +232,6 @@ ApplicationWindow {
                         node.label = label
                         node.image = "qrc:/images/sw.png"
                     }
-                    topology.insertPort(node, Qan.NodeItem.Right)
                     node.item.x = drop.x - node.item.width/2
                     node.item.y = drop.y - node.item.height/2
                 }
