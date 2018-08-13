@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 
 #include "QuickQanava.h"
 #include "qanFaceNode.h"
@@ -12,6 +13,8 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
+
+    QQuickStyle::setStyle("Material");
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("FileOper", new FileReadWriter);

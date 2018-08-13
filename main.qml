@@ -84,6 +84,7 @@ ApplicationWindow {
 
             var swLabel = "s"+splits[0]
             var node = topology.insertFaceNode({"type":"sw","label":swLabel})
+//            var e = topology.insertPort(node, Qan.NodeItem.Right)
             node.image = "qrc:/images/sw.png"
             node.label = swLabel
 
@@ -97,6 +98,7 @@ ApplicationWindow {
                 var esLabel = "e"+splits[j]
                 if (!hasNodes(esLabel)) {
                     node = topology.insertFaceNode({"type":"es","label":esLabel})
+//                    topology.insertPort(node, Qan.NodeItem.Right)
                     node.image = "qrc:/images/es.png"
                     node.label = esLabel
                     eses.push(node)
@@ -123,6 +125,7 @@ ApplicationWindow {
 
     function drawLines() {
         //sw an es
+        var edge
         var keys = Object.keys(sw_eses)
         for (var i=0; i<keys.length; ++i) {
             var key = keys[i]
@@ -131,7 +134,10 @@ ApplicationWindow {
             for (var j=0; j<ess.length; ++j) {
                 var esName = ess[j]
                 var esNode = findNode(esName)
-                topology.insertEdge(swNode, esNode)
+                edge = topology.insertEdge(swNode, esNode)
+                edge.label = "wedge"+String(i)
+//                topology.bindEdgeSource(edge, swNode.item.ports.at(0))
+//                topology.bindEdgeDestination(edge, esNode.item.ports.at(0))
             }
         }
 
@@ -144,7 +150,10 @@ ApplicationWindow {
             for (j=0; j<ess.length; ++j) {
                 esName = ess[j]
                 esNode = findNode(esName)
-                topology.insertEdge(swNode, esNode)
+                edge = topology.insertEdge(swNode, esNode)
+                edge.label = "eedge"+String(i)
+//                topology.bindEdgeSource(edge, swNode.item.ports.at(0))
+//                topology.bindEdgeDestination(edge, esNode.item.ports.at(0))
             }
         }
     }
@@ -210,7 +219,6 @@ ApplicationWindow {
             Layout.fillWidth: true
             graph: topology
             navigable: true
-            resizeHandlerColor: Material.accent
             gridThickColor: Material.theme === Material.Dark ? "#4e4e4e" : "#c1c1c1"
 
             DropArea {
@@ -229,6 +237,7 @@ ApplicationWindow {
                         node.label = label
                         node.image = "qrc:/images/sw.png"
                     }
+                    topology.insertPort(node, Qan.NodeItem.Right)
                     node.item.x = drop.x - node.item.width/2
                     node.item.y = drop.y - node.item.height/2
                 }
@@ -238,11 +247,8 @@ ApplicationWindow {
                 id: topology
                 objectName: "graph"
                 anchors.fill: parent
-                clip: true
                 connectorEnabled: true
-                selectionColor: Material.accent
-                connectorColor: Material.accent
-                connectorEdgeColor: Material.accent
+                connectorHEdgeEnabled: true
                 onNodeInserted: {
                     tree.appendNode(node.label, node.type)
                 }
